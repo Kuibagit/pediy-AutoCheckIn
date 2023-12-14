@@ -1,24 +1,28 @@
-name: PEDIY-CheckIn
+name: PEDIY-Attendance
 on:
-  workflow_dispatch:
-  push:
-    branches: [ main ]
-    paths-ignore: 
-      - 'README.md'
-      - 'imgs/**'
   schedule:
-    - cron: 30 22 * * *
+    - cron: '36 7 * * *'  # UTC 时间的 7:36，对应北京时间的 15:36
+  
+  workflow_dispatch:
+  
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - name: setup Node.js
-        uses: actions/setup-node@v1
+      - uses: actions/checkout@v4
+      - name: setup Nodejs
+        uses: actions/setup-node@v4
         with:
-          node-version: '16.x'
+          node-version: 16
       - name: install dependency(dependencies)
         run: npm install
+        
+      - name: Random Delay
+        run: |
+          delay=$((RANDOM % 60 + 60))
+          echo "[*] Waiting for $delay seconds..."
+          sleep $delay
+          
       - name: CheckIn
         run: node main.js
         env:
