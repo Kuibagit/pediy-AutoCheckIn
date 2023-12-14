@@ -30,7 +30,6 @@ const checkIn = async () => {
         }
     };
     return axios(options).then(response => {
-        // 请求成功时输出响应内容
         console.log('[*] Response Data:', response.data);
         const msg = response.data.message;
         if (response.data.code == 0) {
@@ -104,22 +103,18 @@ const start = async () => {
         else {
             console.log('[+] COOKIE检查通过');
         }
+        
         const checkIn_result = await checkIn();
         const message = checkIn_result?.data?.message;
         const code = checkIn_result?.data?.code;
+        
         if (code == 0 || message == '您今日已签到成功') {
-            if (code == 0) console.log('[+] 签到成功');
-            else console.log(message);
-            if (!PUSHPLUS.length) {
-                console.warn('[!] 不存在 PUSHPLUS ，停止推送消息');
-            }
-            else {
+            if (PUSHPLUS.length) {
                 const pushResult = (await sendMsg(message, code))?.data?.msg;
                 console.log('[+] PUSHPLUS 推送结果', pushResult);
+            } else {
+                console.warn('[!] 不存在 PUSHPLUS ，停止推送消息');
             }
-        }
-        else{
-            console.error('error: ',message);
         }
     } catch (error) {
         console.error('catch error: ', error);
