@@ -30,12 +30,12 @@ const checkIn = async () => {
         }
     };
     return axios(options).then(response => {
-        console.log('[*] Response Data:', response.data);
-        const msg = response.data.message;
+        //console.log('[*] Response Data:', response.data);
+        const msg = response.data['message'];
         if (response.data.code == 0) {
             console.log(`[+] 🎉🎉🎉已完成签到，获得${msg}雪币`);
         } else {
-            console.log('[!] ', response.data.msg);
+            console.warn(`[!] ❗', ${msg}`);
         }
     })
     .catch(error => {
