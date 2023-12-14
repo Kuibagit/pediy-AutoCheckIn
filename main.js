@@ -34,8 +34,8 @@ const checkIn = async () => {
         const msg = response.data['message'];
         if (response.data.code == 0) {
             console.log(`[+] 🎉🎉🎉已完成签到，获得${msg}雪币`);
-        } else {
-            console.warn(`[!] ❗', ${msg}`);
+        } else if (msg == '您今日已签到成功'){
+            console.warn(`[!] ❗ 亲，您今天已签到，无需重复签到哈~`);
         }
     })
     .catch(error => {
