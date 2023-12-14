@@ -33,8 +33,10 @@ const checkIn = async () => {
         // 请求成功时输出响应内容
         console.log('[*] Response Data:', response.data);
         const msg = response.data.message;
-        if (msg != '您今日已签到成功') {
+        if (response.data.code == 0) {
             console.log(`[+] 🎉🎉🎉已完成签到，获得${msg}雪币`);
+        } else {
+            console.log('[!] ', response.data.msg);
         }
     })
     .catch(error => {
@@ -84,7 +86,7 @@ const sendMsg = async (msg, code) => {
     }).catch((error) => {
         if (error.response) {
             // 请求成功发出且服务器也响应了状态码，但状态代码超出了 2xx 的范围
-            console.warn(`[+] PUSHPLUS推送 请求失败，状态码：${error.response.status}`);
+            console.warn(`[!] PUSHPLUS推送 请求失败，状态码：${error.response.status}`);
         } else if (error.request) {
             // 请求已经成功发起，但没有收到响应
             console.warn('[!] PUSHPLUS推送 网络错误');
@@ -117,10 +119,10 @@ const start = async () => {
             }
         }
         else{
-            console.error(message);
+            console.error('error: ',message);
         }
     } catch (error) {
-        console.error(error);
+        console.error('catch error: ', error);
     }
 }
 
