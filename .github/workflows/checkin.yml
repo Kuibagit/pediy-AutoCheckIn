@@ -14,21 +14,21 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 16
-      - name: install dependency(dependencies)
+      - name: Install dependency(dependencies)
         run: npm install
         
-      - name: Random Delay
-        run: |
-          delay=$((RANDOM % 60 + 60))
-          echo "[*] Waiting for $delay seconds..."
-          sleep $delay
-          
-      - name: CheckIn
-        run: node main.js
+      - name: Random delay in CheckIn
         env:
           PUSHPLUS: ${{ secrets.PUSHPLUS }}
           COOKIE: ${{ secrets.COOKIE }}
-      - name: keep alive
+        run: |
+          delays=(1 2 3 4)
+          delay=$((${delays[RANDOM % ${#delays[@]}]} * 60))
+          echo "[*] Waiting for $delay seconds..."
+          sleep $delay
+          node main.js
+          
+      - name: Keep alive
         uses: gautamkrishnar/keepalive-workflow@master # keep workflows from being suspended when no commit for a long time
       - name: Delete workflow runs
         uses: Mattraks/delete-workflow-runs@v2 # delete some workflows
